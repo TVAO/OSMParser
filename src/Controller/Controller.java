@@ -1,6 +1,5 @@
 package Controller;
 
-import Model.LineObject;
 import Model.Model;
 import View.View;
 import javafx.collections.FXCollections;
@@ -8,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.ScrollEvent;
+import java.awt.geom.Line2D;
 import java.io.File;
 
 /**
@@ -23,7 +23,7 @@ public class Controller {
     private Canvas canvas;
 
     @FXML
-    private static ObservableList<LineObject> obsList = FXCollections.observableArrayList();
+    private static ObservableList<Line2D> obsList = FXCollections.observableArrayList();
 
     // Constructor
     public Controller() {
@@ -39,7 +39,7 @@ public class Controller {
 
     @FXML
     private void draw() {
-        view.drawMap(obsList);
+        view.drawLines(obsList);
     }
 
     @FXML

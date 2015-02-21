@@ -1,20 +1,17 @@
 package View;
 
-import Model.LineObject;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
+import java.awt.geom.Line2D;
 import java.io.File;
 import java.io.IOException;
 
@@ -85,27 +82,25 @@ public class View extends Application {
     }
 
     /**
-     * Draws representation of map using Line objects that holds coordinates  
-     * @param lineList - holds Line objects with coordinates 
+     * Draws representation of map using Line2D objects that holds coordinates parsed from OSM file
+     * @param lineList - holds Line objects with coordinates
      */
-    public void drawMap(ObservableList<LineObject> lineList) {
+    public void drawLines(ObservableList<Line2D> lineList) {
         clearCanvas(); // Reset before drawing
-        for (LineObject line : lineList) {
+        for (Line2D line : lineList) {
             // Draw thick black line
             gc.setLineWidth(2);
             gc.setStroke(Color.BLACK);
             gc.setLineCap(StrokeLineCap.BUTT);
             gc.strokeLine(line.getX1(), line.getY1(), line.getX2(), line.getY2());
-            // Draw thin overlapping white line to show roads on map 
+            // Draw thin overlapping white line to show roads on map
             gc.setLineWidth(1);
             gc.setStroke(Color.WHITE);
             gc.setLineCap(StrokeLineCap.BUTT);
             gc.strokeLine(line.getX1(), line.getY1(), line.getX2(), line.getY2());
         }
     }
-
-    public void loadMap() {}
-
+    
     /**
      * Creates a file menu dialogue upon using the load button in GUI and save data input in file 
      * @return - file with data input 
@@ -113,7 +108,7 @@ public class View extends Application {
     public File chooseFile() {
         FileChooser fileChooser = new FileChooser(); // File menu dialogue 
         // Show text files only 
-        FileChooser.ExtensionFilter textFilter = new FileChooser.ExtensionFilter("Text Files (*.txt)", "*.txt");
+        FileChooser.ExtensionFilter textFilter = new FileChooser.ExtensionFilter("OSM Files (*.osm)", "*.osm");
         fileChooser.getExtensionFilters().add(textFilter);
         // Show dialogue 
         fileChooser.setTitle("Choose file");
@@ -129,7 +124,7 @@ public class View extends Application {
     public void zoomIn(ObservableList obsList) {
         double scaleFactor = 0.9;
         gc.scale(scaleFactor, scaleFactor);
-        drawMap(obsList); // dynamic resize
+        drawLines(obsList); // dynamic resize
     }
 
     /**
@@ -139,9 +134,10 @@ public class View extends Application {
     public void zoomOut(ObservableList obsList) {
         double scaleFactor = 1.1;
         gc.scale(scaleFactor, scaleFactor);
-        drawMap(obsList); // dynamic resize
+        drawLines(obsList); // dynamic resize
     }
 
+    /*
     // (NOT WORKING YET) Should zoom relative to mouse position, found on Stacksocial
     private void setSceneEvents(Scene scene) {
         //handles mouse scrolling
@@ -161,6 +157,7 @@ public class View extends Application {
                     }
                 });
     }
+    */
 
 }
 
